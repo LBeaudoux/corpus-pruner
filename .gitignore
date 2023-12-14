@@ -1,0 +1,5 @@
+env_corpus-pruner/
+__pycache__/
+data/
+*.ipynb
+.vscode/
