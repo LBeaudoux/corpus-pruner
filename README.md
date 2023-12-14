@@ -1,0 +1,30 @@
+# Corpus Pruner
+
+A Python library for pruning the sentences of a corpus.
+
+## Installation
+
+```sh
+pip install git+ssh://git@github.com/LBeaudoux/corpus-pruner.git#egg=corpus-pruner
+```
+
+## Usage
+
+```python
+from tatoebatools import tatoeba
+from corpus_pruner.corpus import Corpus
+from corpus_pruner.corpus_pruner import CorpusPruner
+
+langcode = "eng"
+
+corpus = Corpus(langcode)
+corpus.add_sentences(map(lambda x: x.text, tatoeba.sentences_detailed(langcode)))
+
+corpus_pruner = CorpusPruner(corpus)
+corpus_pruner.prune_long_sentences(max_tokens=15)
+corpus_pruner.prune_unknown_tokens()
+corpus_pruner.prune_pervasive_tekens(min_count=20, min_zipf_diff=1.0)
+
+ok_sentences = [sentence.text for sentence in corpus_pruner.sentences()]
+nok_sentences = [sentence.text for sentence in corpus_pruner.pruned_sentences()]
+```
