@@ -5,7 +5,7 @@ A Python library for pruning the sentences of a corpus.
 ## Installation
 
 ```sh
-pip install git+ssh://git@github.com/LBeaudoux/corpus-pruner.git#egg=corpus-pruner
+pip install git+https://github.com/LBeaudoux/corpus-pruner.git
 ```
 
 ## Usage
