@@ -20,6 +20,7 @@ setuptools.setup(
     ],
     python_requires=">=3.8",
     install_requires=[
+        "importlib-resources;python_version<'3.9'",
         "iso639-lang>=2.2.2",
         "pandas>=2.0.3",
         "wordfreq[cjk]>=3.1.1",

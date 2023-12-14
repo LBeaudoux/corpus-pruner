@@ -7,6 +7,7 @@ import pandas as pd
 from wordfreq import freq_to_zipf, word_frequency, zipf_frequency, zipf_to_freq
 
 from .corpus import Corpus, Sentence
+from .ngramfreq import NgramFreq, iter_ngrams
 
 logger = logging.getLogger(__name__)
 
@@ -118,5 +119,52 @@ class CorpusPruner:
                     counts.update(sentence_counts)
             self._nok |= nok_sentence_indexes
 
+    def prune_pervasive_ngrams(
+        self,
+        n: int = 3,
+        min_count: int = 1000,
+        min_zipf_diff: float = 1.0,
+        epoch: int = 3,
+    ) -> None:
+        def get_max_counts():
+            ngram_freq = NgramFreq(self._corpus.lang.pt3, n)
+            ngram_counts = self._count_ngrams()
+            tot_ngrams = sum(ngram_counts.values())
+            max_counts = {}
+            for ngram in ngram_counts.keys():
+                zf = ngram_freq.zipf_frequency(ngram)
+                max_zf = zf + min_zipf_diff
+                max_count = zipf_to_freq(max_zf) * tot_ngrams
+                max_counts[ngram] = int(max_count)
+            return max_counts
+
+        for e in range(epoch):
+            logger.debug(f"epoch #{e}")
+            max_counts = get_max_counts()
+            counts = defaultdict(int)
+            nok_sentence_indexes = set()
+            for sentence in self.sentences():
+                sentence_counts = {
+                    ngram: counts[ngram]
+                    for ngram in iter_ngrams(sentence.tokens, n=n)
+                }
+                try:
+                    for ngram in iter_ngrams(sentence.tokens, n=n):
+                        sentence_counts[ngram] += 1
+                        if sentence_counts[ngram] > min_count:
+                            assert sentence_counts[ngram] < max_counts[ngram]
+                except AssertionError:
+                    nok_sentence_indexes.add(sentence.index)
+                else:
+                    counts.update(sentence_counts)
+            self._nok |= nok_sentence_indexes
+
     def _count_tokens(self):
         return Counter(chain(*[s.tokens for s in self.sentences()]))
+
+    def _count_ngrams(self, n: int = 3):
+        ngram_counts = defaultdict(int)
+        for sentence in self.sentences():
+            for ngram in iter_ngrams(sentence.tokens, n=n):
+                ngram_counts[ngram] += 1
+        return ngram_counts
