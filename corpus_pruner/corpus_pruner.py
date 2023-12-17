@@ -86,8 +86,11 @@ class CorpusPruner:
                 nok_sentence_indexes.add(sentence.index)
         self._nok |= nok_sentence_indexes
 
-    def prune_pervasive_tekens(
-        self, min_count: int = 0, min_zipf_diff: float = 1.0, epoch: int = 3
+    def prune_pervasive_tokens(
+        self,
+        threshold_count: int = 0,
+        threshold_zipf_diff: float = 1.0,
+        epoch: int = 3,
     ) -> None:
         def get_max_counts():
             token_counts = self._count_tokens()
@@ -95,7 +98,7 @@ class CorpusPruner:
             max_counts = {}
             for token in token_counts.keys():
                 zf = zipf_frequency(token, self._corpus.lang.pt1)
-                max_zf = zf + min_zipf_diff
+                max_zf = zf + threshold_zipf_diff
                 max_count = zipf_to_freq(max_zf) * tot_tokens
                 max_counts[token] = int(max_count)
             return max_counts
@@ -110,7 +113,7 @@ class CorpusPruner:
                 try:
                     for token in sentence.tokens:
                         sentence_counts[token] += 1
-                        if sentence_counts[token] > min_count:
+                        if sentence_counts[token] > threshold_count:
                             assert sentence_counts[token] < max_counts[token]
                 except AssertionError:
                     nok_sentence_indexes.add(sentence.index)
