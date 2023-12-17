@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="corpus-pruner",
-    version="0.0.1",
+    version="0.1.0",
     author="L.Beaudoux",
     description="A Python library for pruning the sentences of a corpus",
     long_description=long_description,
