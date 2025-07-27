@@ -1,7 +1,7 @@
 import logging
 from collections import Counter, defaultdict
 from itertools import chain
-from typing import Dict, Generator
+from typing import Generator
 
 import pandas as pd
 from wordfreq import freq_to_zipf, word_frequency, zipf_frequency, zipf_to_freq
@@ -44,7 +44,7 @@ class CorpusPruner:
         token_counts = self._count_tokens()
         tot_tokens = sum(token_counts.values())
 
-        def get_token_frequency_stats(token) -> Dict[str, float]:
+        def get_token_frequency_stats(token) -> dict[str, float]:
             count = token_counts[token]
             ref_count = int(
                 word_frequency(token, self._corpus.lang.pt1) * tot_tokens

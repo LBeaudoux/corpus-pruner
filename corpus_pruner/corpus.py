@@ -2,7 +2,7 @@ from collections import namedtuple
 from typing import Iterable, Iterator
 
 from iso639 import Lang
-from wordfreq import tokenize
+from wordfreq.tokens import tokenize
 
 Sentence = namedtuple("Sentence", ["index", "text", "tokens"])
 

@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "corpus-pruner"
+version = "0.1.0"
+dependencies = [
+    "iso639-lang>=2.2.2",
+    "pandas>=2.0.3",
+    "wordfreq[cjk]>=3.1.1",
+]
+requires-python = ">=3.10"
+authors = [
+    {name = "Laurent Beaudoux", email = "lbeaudoux@gmail.com"},
+]
+description = "A Python library for pruning the sentences of a corpus"
+readme = "README.md"
+license = "MIT"
+classifiers = [
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Development Status :: 3 - Alpha",
+]
+[project.urls]
+Homepage = "https://github.com/LBeaudoux/corpus-pruner"
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.setuptools]
+packages = ["corpus_pruner"]
+
