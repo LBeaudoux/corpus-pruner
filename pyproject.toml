@@ -18,12 +18,9 @@ description = "A Python library for pruning the sentences of a corpus"
 readme = "README.md"
 license = "MIT"
 classifiers = [
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python :: 3.13",
-        "Operating System :: OS Independent",
-        "Development Status :: 3 - Alpha",
+    "Programming Language :: Python",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
 ]
 [project.urls]
 Homepage = "https://github.com/LBeaudoux/corpus-pruner"
